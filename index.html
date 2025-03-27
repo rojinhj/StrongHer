@@ -27,8 +27,8 @@
             margin: 10px 0;
             border-radius: 5px;
             border: 1px solid #ccc;
-            box-sizing: border-box; /* Ensures padding does not affect width */
-            height: 40px; /* Ensures consistent height for all elements */
+            box-sizing: border-box;
+            height: 40px; /* Ensure consistent height */
         }
         button {
             background-color: #d63384;
@@ -37,7 +37,13 @@
         }
         /* Specifically target the select element */
         select {
-            height: 40px; /* Make sure it matches the height of other inputs */
+            -webkit-appearance: none; /* Remove default dropdown styling */
+            -moz-appearance: none;
+            appearance: none;
+            height: 40px;
+            padding: 10px;
+            font-size: 16px; /* Ensure text size is consistent */
+            background-color: white; /* Ensure consistency in background */
         }
     </style>
 </head>
@@ -79,3 +85,4 @@
     </script>
 </body>
 </html>
+
