@@ -1,76 +1,30 @@
-<!DOCTYPE html>
-<html lang="fa">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>محاسبه پروتئین روزانه - StrongHer</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 50px;
-            direction: rtl;
-            background-color: #f8f9fa;
-        }
-        .container {
-            max-width: 400px;
-            margin: auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-            background-color: white;
-        }
-        input, button, select {
-            width: calc(100% - 20px);
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            box-sizing: border-box;
-        }
-        button {
-            background-color: #d63384;
-            color: white;
-            cursor: pointer;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h2>محاسبه پروتئین روزانه - StrongHer</h2>
-        <p>پروتئین یک ماده مغذی ضروری برای بدن است که در سلامت عضلات، سیستم ایمنی و عملکرد کلی نقش مهمی دارد. فرقی نمی‌کند که فعال باشید یا کم‌تحرک، بدن شما به مقدار مشخصی پروتئین نیاز دارد تا بهینه کار کند. با استفاده از این ماشین حساب ساده می‌توانید مقدار پروتئین موردنیاز روزانه خود را به راحتی محاسبه کنید.</p>
-        <form id="proteinForm">
-            <input type="text" id="firstName" placeholder="نام" required>
-            <input type="text" id="lastName" placeholder="نام خانوادگی" required>
-            <input type="number" id="age" placeholder="سن" required>
-            <select id="weightUnit">
-                <option value="lbs">وزن (پوند)</option>
-                <option value="kg">وزن (کیلوگرم)</option>
-            </select>
-            <input type="number" id="weight" placeholder="وزن" required>
-            <button type="button" onclick="calculateProtein()">محاسبه</button>
-        </form>
-        <h3 id="result"></h3>
-    </div>
-    
-    <script>
-        function calculateProtein() {
-            let weight = document.getElementById('weight').value;
-            let unit = document.getElementById('weightUnit').value;
-            let proteinNeed = 0;
-            
-            if (weight > 0) {
-                if (unit === "lbs") {
-                    proteinNeed = Math.round(weight * 1);
-                } else if (unit === "kg") {
-                    proteinNeed = Math.round(weight * 2.2);
-                }
-                document.getElementById('result').innerText = `نیاز روزانه شما به پروتئین حدود ${proteinNeed} گرم است.`;
-            } else {
-                document.getElementById('result').innerText = "لطفاً وزن معتبر وارد کنید.";
+<script>
+    function convertPersianToEnglishNumbers(str) {
+        const persianNumbers = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+        const englishNumbers = ['0','1','2','3','4','5','6','7','8','9'];
+
+        return str.replace(/[۰-۹]/g, function(w) {
+            return englishNumbers[persianNumbers.indexOf(w)];
+        });
+    }
+
+    function calculateProtein() {
+        let weightRaw = document.getElementById('weight').value;
+        let weightClean = convertPersianToEnglishNumbers(weightRaw.trim());
+        let weight = parseFloat(weightClean);
+
+        let unit = document.getElementById('weightUnit').value;
+        let proteinNeed = 0;
+        
+        if (weight > 0) {
+            if (unit === "lbs") {
+                proteinNeed = Math.round(weight * 1);
+            } else if (unit === "kg") {
+                proteinNeed = Math.round(weight * 2.2);
             }
+            document.getElementById('result').innerText = `نیاز روزانه شما به پروتئین حدود ${proteinNeed} گرم است.`;
+        } else {
+            document.getElementById('result').innerText = "لطفاً وزن معتبر وارد کنید.";
         }
-    </script>
-</body>
-</html>
+    }
+</script>
