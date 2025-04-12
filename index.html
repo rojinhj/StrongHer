@@ -1,67 +1,100 @@
 <!DOCTYPE html>
 <html lang="fa">
 <head>
-  <meta charset="UTF-8">
-  <title>محاسبه پروتئین</title>
-  <style>
-    body {
-      font-family: Arial;
-      direction: rtl;
-      text-align: center;
-      padding: 50px;
-      background-color: #f2f2f2;
-    }
-    .box {
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      max-width: 400px;
-      margin: auto;
-    }
-    input, select, button {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      font-size: 16px;
-    }
-    button {
-      background-color: #d63384;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>محاسبه پروتئین روزانه - StrongHer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+            direction: rtl;
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+            background-color: white;
+        }
+        input, button, select {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #d63384;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-  <div class="box">
-    <h2>محاسبه پروتئین</h2>
-    <select id="weightUnit">
-      <option value="lbs">پوند</option>
-      <option value="kg">کیلوگرم</option>
-    </select>
-    <input type="text" id="weight" placeholder="وزن خود را وارد کنید">
-    <button onclick="calculateProtein()">محاسبه</button>
-    <p id="result"></p>
-  </div>
+    <div class="container">
+        <h2>محاسبه پروتئین روزانه - StrongHer</h2>
+        <p>پروتئین یک ماده مغذی ضروری برای بدن است که در سلامت عضلات، سیستم ایمنی و عملکرد کلی نقش مهمی دارد. فرقی نمی‌کند که فعال باشید یا کم‌تحرک، بدن شما به مقدار مشخصی پروتئین نیاز دارد تا بهینه کار کند. با استفاده از این ماشین حساب ساده می‌توانید مقدار پروتئین موردنیاز روزانه خود را به راحتی محاسبه کنید.</p>
+        <form id="proteinForm">
+            <input type="text" id="firstName" placeholder="نام" required>
+            <input type="text" id="lastName" placeholder="نام خانوادگی" required>
+            <input type="text" id="age" placeholder="سن" required>
+            <select id="weightUnit">
+                <option value="lbs">وزن (پوند)</option>
+                <option value="kg">وزن (کیلوگرم)</option>
+            </select>
+            <input type="text" id="weight" placeholder="وزن" required>
+            <button type="button" onclick="calculateProtein()">محاسبه</button>
+        </form>
+        <h3 id="result"></h3>
+    </div>
+    
+    <script>
+        // Convert Persian and Arabic numbers to English
+        function convertToEnglishDigits(str) {
+            const persianDigits = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+            const arabicDigits  = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
 
-  <script>
-    function convertPersianToEnglishNumbers(str) {
-      return str.replace(/[۰-۹]/g, (digit) => '۰۱۲۳۴۵۶۷۸۹'.indexOf(digit));
-    }
+            return str
+                .split('')
+                .map(c => {
+                    if (persianDigits.includes(c)) {
+                        return persianDigits.indexOf(c);
+                    } else if (arabicDigits.includes(c)) {
+                        return arabicDigits.indexOf(c);
+                    } else {
+                        return c;
+                    }
+                })
+                .join('');
+        }
 
-    function calculateProtein() {
-      let rawWeight = document.getElementById("weight").value.trim();
-      let weightStr = convertPersianToEnglishNumbers(rawWeight);
-      let weight = parseFloat(weightStr);
-      let unit = document.getElementById("weightUnit").value;
+        function calculateProtein() {
+            let rawWeight = document.getElementById('weight').value.trim();
+            let unit = document.getElementById('weightUnit').value;
 
-      if (!isNaN(weight) && weight > 0) {
-        let protein = unit === "kg" ? Math.round(weight * 2.2) : Math.round(weight);
-        document.getElementById("result").innerText = `نیاز روزانه شما به پروتئین: ${protein} گرم`;
-      } else {
-        document.getElementById("result").innerText = "لطفاً وزن معتبر وارد کنید.";
-      }
-    }
-  </script>
+            // Convert any Persian or Arabic numbers to English
+            let weightStr = convertToEnglishDigits(rawWeight);
+            let weight = parseFloat(weightStr);
+
+            let proteinNeed = 0;
+
+            if (!isNaN(weight) && weight > 0) {
+                if (unit === "lbs") {
+                    proteinNeed = Math.round(weight * 1);
+                } else if (unit === "kg") {
+                    proteinNeed = Math.round(weight * 2.2);
+                }
+                document.getElementById('result').innerText = `نیاز روزانه شما به پروتئین حدود ${proteinNeed} گرم است.`;
+            } else {
+                document.getElementById('result').innerText = "لطفاً وزن معتبر وارد کنید.";
+            }
+        }
+    </script>
 </body>
 </html>
